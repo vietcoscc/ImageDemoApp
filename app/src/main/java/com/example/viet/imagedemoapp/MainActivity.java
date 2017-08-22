@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.btnPost)
     Button btnPost;
-    private ImageRecyclerViewAdapter adapter;
-    private ArrayList<Image> arrImage = new ArrayList<>();
+    private ImageRecyclerViewAdapter mAdapter;
+    private ArrayList<Image> mArrImage = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +57,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter = new ImageRecyclerViewAdapter(arrImage);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new ImageRecyclerViewAdapter(mArrImage);
+        recyclerView.setAdapter(mAdapter);
         Retrofit retrofit = ApiClient.getApiClient();
         Call<ArrayList<Image>> call = retrofit.create(ApiInterface.class).getImage("5");
         call.enqueue(new Callback<ArrayList<Image>>() {
             @Override
             public void onResponse(Call<ArrayList<Image>> call, Response<ArrayList<Image>> response) {
                 ArrayList<Image> images = response.body();
-                arrImage.clear();
-                arrImage.addAll(images);
-                adapter.notifyDataSetChanged();
+                mArrImage.clear();
+                mArrImage.addAll(images);
+                mAdapter.notifyDataSetChanged();
                 Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
             }
 

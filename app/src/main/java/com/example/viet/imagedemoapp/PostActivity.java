@@ -1,7 +1,6 @@
 package com.example.viet.imagedemoapp;
 
 import android.content.Intent;
-import android.database.Observable;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +33,7 @@ public class PostActivity extends AppCompatActivity {
     EditText edtTitle;
     @BindView(R.id.btnUpload)
     Button btnUpload;
-    private Bitmap bitmap;
+    private Bitmap mBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class PostActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtTitle.getText().toString().isEmpty() || bitmap == null) {
+                if (edtTitle.getText().toString().isEmpty() || mBitmap == null) {
                     Toast.makeText(PostActivity.this, "Content must not empty ", Toast.LENGTH_SHORT).show();
                 }
                 String title = edtTitle.getText().toString().trim();
@@ -83,8 +82,8 @@ public class PostActivity extends AppCompatActivity {
             Toast.makeText(this, "Chosen", Toast.LENGTH_SHORT).show();
             Uri uri = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ivImage.setImageBitmap(bitmap);
+                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                ivImage.setImageBitmap(mBitmap);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,7 +94,7 @@ public class PostActivity extends AppCompatActivity {
 
     private String stringFromBitmap() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         byte[] bytes = outputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
